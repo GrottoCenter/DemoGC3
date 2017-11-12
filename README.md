@@ -12,3 +12,10 @@ Demonstrate how to integrate GC3 API on a web application
 
 Go to http://localhost:8080/
 
+## Developpement
+
+To take changes automatically in account, run the 2 following commands
+
+`> webpack --watch -d`
+
+`> webpack-dev-server`
