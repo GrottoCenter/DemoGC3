@@ -5,6 +5,7 @@ Demonstrate how to integrate GC3 API on a web application
 
 `> npm install webpack --global`
 `> npm install webpack-dev-server --global`
+`> npm install`
 
 ## Start
 
