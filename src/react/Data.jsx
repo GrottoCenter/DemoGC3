@@ -6,7 +6,7 @@ let APP_STATE = {
         id: 1,
         title: 'Tipula',
         description: '',
-        gc_entry_ref: 123456,
+        gc_entry_ref: 1,
         taxonomy: {
           name: 'Tipula',
           species: 'Tipula',
@@ -20,7 +20,7 @@ let APP_STATE = {
         id: 2,
         title: 'Tipula',
         description: '',
-        gc_entry_ref: 123456,
+        gc_entry_ref: 2,
         taxonomy: {
           name: 'Tipula',
           species: 'Tipula',
@@ -34,7 +34,7 @@ let APP_STATE = {
         id: 3,
         title: 'Tipula',
         description: '',
-        gc_entry_ref: 123456,
+        gc_entry_ref: 3,
         taxonomy: {
           name: 'Tipula',
           species: 'Tipula',

@@ -1,7 +1,57 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {Jumbotron, Grid, Row, Col, Table, Button} from 'react-bootstrap';
+import fetch from 'isomorphic-fetch';
 import APP_STATE from './Data.jsx';
+
+
+class ListDataItem extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      gcEntry: undefined
+    }
+  }
+
+  componentDidMount() {
+    let init = {
+      headers : {
+        Accept: 'application/json',
+        Authorization: '123456789'
+      }
+    };
+    fetch('http://localhost:1337/api/entry/' + this.props.entry.gc_entry_ref, init).then((response) => {
+      if (response.status >= 400) {
+        throw new Error("Bad response from server");
+      }
+      return response.json();
+    })
+      .then((entry) => {
+        this.setState({
+          gcEntryName: entry.name,
+          gcEntryCity: entry.city,
+          gcEntryRegion: entry.region,
+        });
+      });
+  }
+
+  render() {
+    return (
+      <tr>
+        <td>{this.props.entry.id}</td>
+        <td>{this.props.entry.title}</td>
+        <td>{(this.state.gcEntryName) ? this.state.gcEntryName : ''}</td>
+        <td>{(this.state.gcEntryName) ? this.state.gcEntryCity + ' - ' + this.state.gcEntryRegion : ''}</td>
+        <td>{this.props.entry.taxonomy.name}</td>
+        <td>{this.props.entry.sample_bottle}</td>
+        <td>
+          <Button bsStyle="primary" onClick={() => (this.props.history.push('/app/entry/view/' + this.props.entry.id))}>View</Button>
+          <Button bsStyle="danger" onClick={() => this.handleRemove(this.props.entry)}>Remove</Button>
+        </td>
+      </tr>
+    );
+  }
+}
 
 class ListData extends Component {
   constructor(props){
@@ -21,20 +71,7 @@ class ListData extends Component {
 
   render() {
     let data = [];
-    APP_STATE.database.entries.map((entry, index) => (
-      data.push(<tr key={entry.id}>
-        <td>{entry.id}</td>
-        <td>{entry.title}</td>
-        <td>{entry.gc_entry_ref}</td>
-        <td>{entry.gc_entry_ref}</td>
-        <td>{entry.taxonomy.name}</td>
-        <td>{entry.sample_bottle}</td>
-        <td>
-          <Button bsStyle="primary" onClick={() => (this.props.history.push('/app/entry/view/' + entry.id))}>View</Button>
-          <Button bsStyle="danger" onClick={() => this.handleRemove(entry)}>Remove</Button>
-        </td>
-      </tr>)
-    ));
+    APP_STATE.database.entries.map((entry, index) => data.push(<ListDataItem key={entry.id} entry={entry} />));
 
     return (
       <Jumbotron>
@@ -46,7 +83,7 @@ class ListData extends Component {
             <th>#</th>
             <th>Title</th>
             <th>Entry name</th>
-            <th>Entry county</th>
+            <th>Entry location</th>
             <th>Bug species</th>
             <th>Sample bottle</th>
             <th/>
