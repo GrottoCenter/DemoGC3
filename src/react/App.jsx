@@ -27,7 +27,7 @@ class App extends Component {
     return (
       <MainAppGrid>
         <Row className="show-grid">
-          <Col xs={4} xsOffset={2}>
+          <Col xs={8} xsOffset={2}>
             <Navbar>
               <Navbar.Header>
                 <Navbar.Brand>

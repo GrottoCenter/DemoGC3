@@ -45,7 +45,7 @@ class ListDataItem extends Component {
         <td>{this.props.entry.taxonomy.name}</td>
         <td>{this.props.entry.sample_bottle}</td>
         <td>
-          <Button bsStyle="primary" onClick={() => (this.props.history.push('/app/entry/view/' + this.props.entry.id))}>View</Button>
+          <Button bsStyle="primary" onClick={() => (this.props.onClickView(this.props.entry.id))}>View</Button>
           <Button bsStyle="danger" onClick={() => this.handleRemove(this.props.entry)}>Remove</Button>
         </td>
       </tr>
@@ -71,7 +71,11 @@ class ListData extends Component {
 
   render() {
     let data = [];
-    APP_STATE.database.entries.map((entry, index) => data.push(<ListDataItem key={entry.id} entry={entry} />));
+    APP_STATE.database.entries.map((entry, index) => {
+      data.push(<ListDataItem key={entry.id}
+                              entry={entry}
+                              onClickView={(id) => this.props.history.push('/app/entry/view/' + id)}/>);
+    });
 
     return (
       <Jumbotron>

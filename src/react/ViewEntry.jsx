@@ -3,7 +3,7 @@ import {Jumbotron, ButtonGroup, Button, Grid, Row, Col} from 'react-bootstrap';
 import RefMap from './Map.jsx';
 import APP_STATE from './Data.jsx';
 
-const Details = ({reference}) => (
+const Details = ({reference, entry}) => (
   <Grid>
     <Row>
       <Col xs={12}>
@@ -22,9 +22,10 @@ const Details = ({reference}) => (
         <div><label>Family:</label> {reference.taxonomy.family}</div>
         <div><label>Order:</label> {reference.taxonomy.order}</div>
       </Col>
+      {entry &&
       <Col xs={6}>
-        <RefMap position={[51.505, -0.09]} text={reference.title}/>
-      </Col>
+        <RefMap position={[entry.latitude, entry.longitude]} text={entry.name}/>
+      </Col>}
     </Row>
   </Grid>
 );
@@ -39,12 +40,33 @@ class ViewEntry extends Component {
       }
     });
     this.state = {
-      reference: reference
+      reference: reference,
+      entry: undefined
     };
   }
 
+  componentDidMount() {
+    let init = {
+      headers : {
+        Accept: 'application/json',
+        Authorization: '123456789'
+      }
+    };
+    fetch('http://localhost:1337/api/entry/' + this.state.reference.gc_entry_ref, init).then((response) => {
+      if (response.status >= 400) {
+        throw new Error("Bad response from server");
+      }
+      return response.json();
+    })
+      .then((entry) => {
+        this.setState({
+          entry: entry
+        });
+      });
+  }
+
   render() {
-    let content = (this.state.reference) ? <Details reference={this.state.reference}/> : <p>Unknown reference!</p>;
+    let content = (this.state.reference) ? <Details reference={this.state.reference} entry={this.state.entry} /> : <p>Unknown reference!</p>;
     return (
       <Jumbotron>
         <h2>Reference details</h2>
