@@ -1,6 +1,10 @@
 import React from 'react';
 import {Map, Marker, Popup, TileLayer} from 'react-leaflet';
+import styled from 'styled-components';
 
+const FromGC = styled.span`
+  background-color: yellow;
+`;
 const RefMap = ({position, text}) => (
   <Map center={position} zoom={13} style={{height: '300px'}}>
     <TileLayer
@@ -9,7 +13,7 @@ const RefMap = ({position, text}) => (
     />
     <Marker position={position}>
       <Popup>
-        <span>{text}</span>
+        <FromGC>{text}</FromGC>
       </Popup>
     </Marker>
   </Map>

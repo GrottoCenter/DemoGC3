@@ -3,7 +3,11 @@ import {Link} from 'react-router-dom';
 import {Jumbotron, Grid, Row, Col, Table, Button} from 'react-bootstrap';
 import fetch from 'isomorphic-fetch';
 import APP_STATE from './Data.jsx';
+import styled from 'styled-components';
 
+const FromGC = styled.span`
+  background-color: yellow;
+`;
 
 class ListDataItem extends Component {
   constructor(props){
@@ -20,7 +24,7 @@ class ListDataItem extends Component {
         Authorization: '123456789'
       }
     };
-    fetch('http://localhost:1337/api/entry/' + this.props.entry.gc_entry_ref, init).then((response) => {
+    fetch('http://beta.grottocenter.org/api/entry/' + encodeURIComponent(this.props.entry.gc_entry_ref), init).then((response) => {
       if (response.status >= 400) {
         throw new Error("Bad response from server");
       }
@@ -40,8 +44,8 @@ class ListDataItem extends Component {
       <tr>
         <td>{this.props.entry.id}</td>
         <td>{this.props.entry.title}</td>
-        <td>{(this.state.gcEntryName) ? this.state.gcEntryName : ''}</td>
-        <td>{(this.state.gcEntryName) ? this.state.gcEntryCity + ' - ' + this.state.gcEntryRegion : ''}</td>
+        <td><FromGC>{(this.state.gcEntryName) ? this.state.gcEntryName : ''}</FromGC></td>
+        <td><FromGC>{(this.state.gcEntryName) ? this.state.gcEntryCity + ' - ' + this.state.gcEntryRegion : ''}</FromGC></td>
         <td>{this.props.entry.taxonomy.name}</td>
         <td>{this.props.entry.sample_bottle}</td>
         <td>

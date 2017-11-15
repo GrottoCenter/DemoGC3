@@ -2,6 +2,11 @@ import React, {Component} from 'react';
 import {Jumbotron, ButtonGroup, Button} from 'react-bootstrap';
 import fetch from 'isomorphic-fetch';
 import APP_STATE from './Data.jsx';
+import styled from 'styled-components';
+
+const FromGC = styled.span`
+  background-color: yellow;
+`;
 
 class Home extends Component {
   constructor(props) {
@@ -18,7 +23,7 @@ class Home extends Component {
         Authorization: '123456789'
       }
     };
-    fetch('http://localhost:1337/api/entry/publicCount', init).then((response) => {
+    fetch('http://beta.grottocenter.org/api/entry/publicCount', init).then((response) => {
       if (response.status >= 400) {
         throw new Error("Bad response from server");
       }
@@ -37,7 +42,7 @@ class Home extends Component {
         <h2>Bienvenue sur la plus grande base de données mondiale de speleo-entomologie</h2>
         <hr />
         <p>It contains {APP_STATE.database.entries.length} references</p>
-        <p><small>Caving data powered by Grottocenter ({this.state.gcEntries} entries referenced on Grottocenter)</small></p>
+        <p><small>Caving data powered by Grottocenter (<FromGC>{this.state.gcEntries}</FromGC> entries referenced on Grottocenter)</small></p>
         <br/>
         <ButtonGroup bsSize="large">
           <Button bsStyle="primary" onClick={() => (this.props.history.push('/app/list'))}>View references</Button>

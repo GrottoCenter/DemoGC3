@@ -52,7 +52,7 @@ class ViewEntry extends Component {
         Authorization: '123456789'
       }
     };
-    fetch('http://localhost:1337/api/entry/' + this.state.reference.gc_entry_ref, init).then((response) => {
+    fetch('http://beta.grottocenter.org:1337/api/entry/' + encodeURIComponent(this.state.reference.gc_entry_ref), init).then((response) => {
       if (response.status >= 400) {
         throw new Error("Bad response from server");
       }

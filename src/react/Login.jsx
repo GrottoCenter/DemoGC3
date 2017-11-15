@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {Jumbotron, Form, FormGroup, Grid, Row, Col, Button, FormControl, ControlLabel} from 'react-bootstrap';
 import {browserHistory} from 'react-router';
 import {MainAppGrid} from './App.jsx';
-import APP_STATE from './Data.jsx';
 
 class Login extends Component {
   constructor(props) {
@@ -10,8 +9,8 @@ class Login extends Component {
   }
 
   handleLog(param) {
-    APP_STATE.logged = true;
-    this.props.history.push('/app/home');
+    sessionStorage.setItem('logged', true);
+    window.location.assign('/app/home');
   }
 
   render() {

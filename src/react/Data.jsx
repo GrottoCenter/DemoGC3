@@ -1,5 +1,4 @@
 let APP_STATE = {
-  logged: false,
   database: {
     entries: [
       {

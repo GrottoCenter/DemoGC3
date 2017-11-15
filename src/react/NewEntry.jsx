@@ -5,21 +5,22 @@ import Autosuggest, {ItemAdapter} from 'react-bootstrap-autosuggest';
 import styled from 'styled-components';
 import APP_STATE from './Data.jsx';
 
-const baseSelect = {
-  name: 'Please type at least 3 characters',
-  id: 0
-};
-
 const Italic = styled.span`
   font-style: italic;
   color: blue;
 `;
 
-class StateAdapter extends ItemAdapter {
-  getTextRepresentations(item) {
-    return item.name;
-  }
+const FromGC = styled.span`
+  background-color: yellow;
+`;
 
+class EntryAdapter extends ItemAdapter {
+  itemIncludedByInput() {
+    return true;
+  }
+  sortItems(items) {
+    return items;
+  }
   renderItem(item) {
     let details = '';
     if (item.city) {
@@ -41,16 +42,18 @@ class StateAdapter extends ItemAdapter {
     );
   }
 }
-StateAdapter.instance = new StateAdapter();
+EntryAdapter.instance = new EntryAdapter();
 
 class NewEntry extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      datasource: [baseSelect],
+      repos: [],
+      reposMessage: '',
+      reposMore: null,
       title: '',
       name: '',
-      entry: '',
+      entry: undefined,
       specie: '',
       genus: '',
       family: '',
@@ -70,12 +73,12 @@ class NewEntry extends Component {
   }
 
   handleValidate() {
-    if (document.getElementById('formHorizontalEntryId').value > 0) {
+    if (this.state.entry && this.state.entry.id > 0) {
       let newEntry = {
         id: this.getMaxIdOnDb(),
         title: this.state.title,
         description: '',
-        gc_entry_ref: document.getElementById('formHorizontalEntryId').value,
+        gc_entry_ref: this.state.entry.id,
         taxonomy: {
           name: this.state.name,
           species: this.state.specie,
@@ -91,38 +94,71 @@ class NewEntry extends Component {
     }
   }
 
-  searchSuggests() {
-    let searchText = document.getElementById('formHorizontalEntry').value;
-    if (searchText && searchText.length >= 3) {
+  onRepoSearch(search, page, prev) { // $fold-line$
+    if (search && search.length >= 3) {
+      this.setState({
+        reposMessage: 'Searching for matching repositories...',
+        reposMore: null
+      });
+      let url = 'http://beta.grottocenter.org/api/search/findAll?name=' +
+        encodeURIComponent(search);
+      if (page) {
+        url += '&page=' + page
+      }
       let init = {
         headers: {
           Accept: 'application/json',
           Authorization: '123456789'
         }
       };
-      let criteria = 'name=' + encodeURIComponent(searchText);
-      fetch('http://localhost:1337/api/search/findAll?' + criteria, init).then((response) => {
-        if (response.status >= 400) {
-          throw new Error("Bad response from server");
+      fetch(url, init).then(response => {
+        if (response.ok) {
+          response.json().then(json => {
+            let repos, reposMessage, reposMore;
+            if (json.length === 0) {
+              reposMessage = 'No matching repositories';
+            } else {
+              repos = prev ? prev.concat(json) : json;
+              if (repos.length < json.length) {
+                reposMessage = 'Load more...';
+                reposMore = () => onRepoSearch(search, page ? page + 1 : 2, repos);
+              }
+            }
+            this.setState({
+              repos,
+              reposMessage,
+              reposMore
+            })
+          })
+        } else {
+          this.setState({
+            repos: null,
+            reposMessage: 'Repository search returned error: ' + response.statusText,
+            reposMore: null
+          })
         }
-        return response.json();
-      })
-      .then((results) => {
+      }, err => {
         this.setState({
-          datasource: results
-        });
-      });
+          repos: null,
+          reposMessage: 'Repository search failed: ' + err.message,
+          reposMore: null
+        })
+      })
     } else {
       this.setState({
-        datasource: [baseSelect]
-      });
+        repos: null,
+        reposMessage: 'Type at least 3 characters to get suggestions',
+        reposMore: null
+      })
     }
   }
 
-  selectEntry(item) {
-    if (item && item.id > 0) {
-      document.getElementById('formHorizontalEntryId').value = item.id;
-    }
+  onRepoChange(value) {
+    this.setState({ repo: value })
+  }
+
+  onSelect(value) {
+    this.setState({ entry: value })
   }
 
   render() {
@@ -147,22 +183,24 @@ class NewEntry extends Component {
 
           <FormGroup controlId="formHorizontalEntry">
             <Col componentClass={ControlLabel} sm={4}>
-              Entry (from Grottocenter)
+              <FromGC>Location</FromGC>
             </Col>
             <Col sm={8}>
               <Autosuggest
-                placeholder="Choose an entry"
-                itemAdapter={StateAdapter.instance}
-                onChange={() => this.searchSuggests()}
-                onSelect={(item) => this.selectEntry(item)}
-                itemReactKeyPropName='id'
-                itemValuePropName='name'
-                value={this.state.entry}
-                datalist={this.state.datasource}/>
+                datalist={this.state.repos}
+                datalistPartial
+                datalistMessage={this.state.reposMessage}
+                onDatalistMessageSelect={this.state.reposMore}
+                placeholder="Select an entry"
+                value={this.state.repo}
+                itemAdapter={EntryAdapter.instance}
+                itemValuePropName="name"
+                searchDebounce={500}
+                onSearch={(...args) => this.onRepoSearch(...args)}
+                onChange={(...args) => this.onRepoChange(...args)}
+                onSelect={(...args) => this.onSelect(...args)} />
             </Col>
           </FormGroup>
-
-          <input type='hidden' id='formHorizontalEntryId' />
 
           <FormGroup controlId="formHorizontalName">
             <Col componentClass={ControlLabel} sm={4}>
