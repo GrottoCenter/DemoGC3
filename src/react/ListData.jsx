@@ -21,10 +21,10 @@ class ListDataItem extends Component {
     let init = {
       headers : {
         Accept: 'application/json',
-        Authorization: '123456789'
+        Authorization: APP_STATE.key
       }
     };
-    fetch('http://beta.grottocenter.org/api/entry/' + encodeURIComponent(this.props.entry.gc_entry_ref), init).then((response) => {
+    fetch(APP_STATE.url + '/api/entry/' + encodeURIComponent(this.props.entry.gc_entry_ref), init).then((response) => {
       if (response.status >= 400) {
         throw new Error("Bad response from server");
       }

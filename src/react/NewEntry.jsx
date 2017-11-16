@@ -100,7 +100,7 @@ class NewEntry extends Component {
         reposMessage: 'Searching for matching repositories...',
         reposMore: null
       });
-      let url = 'http://beta.grottocenter.org/api/search/findAll?name=' +
+      let url = APP_STATE.url + '/api/search/findAll?name=' +
         encodeURIComponent(search);
       if (page) {
         url += '&page=' + page
@@ -108,7 +108,7 @@ class NewEntry extends Component {
       let init = {
         headers: {
           Accept: 'application/json',
-          Authorization: '123456789'
+          Authorization: APP_STATE.key
         }
       };
       fetch(url, init).then(response => {

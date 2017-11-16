@@ -20,10 +20,10 @@ class Home extends Component {
     let init = {
       headers : {
         Accept: 'application/json',
-        Authorization: '123456789'
+        Authorization: APP_STATE.key
       }
     };
-    fetch('http://beta.grottocenter.org/api/entry/publicCount', init).then((response) => {
+    fetch(APP_STATE.url + '/api/entry/publicCount', init).then((response) => {
       if (response.status >= 400) {
         throw new Error("Bad response from server");
       }

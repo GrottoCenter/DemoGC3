@@ -1,4 +1,6 @@
 let APP_STATE = {
+  url: 'http://beta.grottocenter.org',
+  key : 'TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQ=',
   database: {
     entries: [
       {
