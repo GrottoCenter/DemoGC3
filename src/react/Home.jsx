@@ -39,7 +39,7 @@ class Home extends Component {
   render() {
     return (
       <Jumbotron>
-        <h2>Bienvenue sur la plus grande base de données mondiale de speleo-entomologie</h2>
+        <h2>Welcome on the biggest worldwide database of speleo-entomology</h2>
         <hr />
         <p>It contains {APP_STATE.database.entries.length} references</p>
         <p><small>Caving data powered by Grottocenter (<FromGC>{this.state.gcEntries}</FromGC> entries referenced on Grottocenter)</small></p>

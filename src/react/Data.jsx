@@ -7,7 +7,7 @@ let APP_STATE = {
         id: 1,
         title: 'Tipula',
         description: '',
-        gc_entry_ref: 1,
+        gc_entry_ref: 5434,
         taxonomy: {
           name: 'Tipula',
           species: 'Tipula',
@@ -15,35 +15,35 @@ let APP_STATE = {
           family: 'Tipulidae',
           order: 'Diptera'
         },
-        sample_bottle: 'NHT491'
+        sample_bottle: 'BT001'
       },
       {
         id: 2,
-        title: 'Tipula',
+        title: 'Collemboles',
         description: '',
-        gc_entry_ref: 2,
+        gc_entry_ref: 5,
         taxonomy: {
-          name: 'Tipula',
-          species: 'Tipula',
+          name: 'Collembola',
+          species: undefined,
           genus: undefined,
-          family: 'Tipulidae',
-          order: 'Diptera'
+          family: 'Arthropoda',
+          order: undefined
         },
-        sample_bottle: 'NHT491'
+        sample_bottle: 'BT203'
       },
       {
         id: 3,
-        title: 'Tipula',
+        title: 'Sauterelle cavernicole',
         description: '',
-        gc_entry_ref: 3,
+        gc_entry_ref: 415,
         taxonomy: {
-          name: 'Tipula',
-          species: 'Tipula',
+          name: 'Rhaphidophoridae',
+          species: undefined,
           genus: undefined,
-          family: 'Tipulidae',
-          order: 'Diptera'
+          family: 'Rhaphidophoridae',
+          order: 'Orthoptera'
         },
-        sample_bottle: 'NHT491'
+        sample_bottle: 'BT006'
       }
     ]
 
