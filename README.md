@@ -26,6 +26,10 @@ Go into DemoGC3 folder and type:
 
 ## Start
 
+`> webpack`
+
+puis
+
 `> webpack-dev-server`
 
 Go to http://localhost:8080/
