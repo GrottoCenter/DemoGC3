@@ -23,7 +23,7 @@ class Home extends Component {
         Authorization: APP_STATE.key
       }
     };
-    fetch(APP_STATE.url + '/api/entry/publicCount', init).then((response) => {
+    fetch(APP_STATE.url + '/api/v1/entry/publicCount', init).then((response) => {
       if (response.status >= 400) {
         throw new Error("Bad response from server");
       }

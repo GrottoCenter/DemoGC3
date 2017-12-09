@@ -100,7 +100,7 @@ class NewEntry extends Component {
         reposMessage: 'Searching for matching repositories...',
         reposMore: null
       });
-      let url = APP_STATE.url + '/api/search/findAll?name=' +
+      let url = APP_STATE.url + '/api/v1/search/findAll?name=' +
         encodeURIComponent(search);
       if (page) {
         url += '&page=' + page

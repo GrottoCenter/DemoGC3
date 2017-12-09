@@ -52,7 +52,7 @@ class ViewEntry extends Component {
         Authorization: APP_STATE.key
       }
     };
-    fetch(APP_STATE.url + '/api/entry/' + encodeURIComponent(this.state.reference.gc_entry_ref), init).then((response) => {
+    fetch(APP_STATE.url + '/api/v1/entry/' + encodeURIComponent(this.state.reference.gc_entry_ref), init).then((response) => {
       if (response.status >= 400) {
         throw new Error("Bad response from server");
       }
