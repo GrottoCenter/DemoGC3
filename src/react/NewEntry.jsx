@@ -115,11 +115,11 @@ class NewEntry extends Component {
         if (response.ok) {
           response.json().then(json => {
             let repos, reposMessage, reposMore;
-            if (json.length === 0) {
+            if (json.entries.length === 0) {
               reposMessage = 'No matching repositories';
             } else {
-              repos = prev ? prev.concat(json) : json;
-              if (repos.length < json.length) {
+              repos = prev ? prev.concat(json.entries) : json.entries;
+              if (repos.length < json.entries.length) {
                 reposMessage = 'Load more...';
                 reposMore = () => onRepoSearch(search, page ? page + 1 : 2, repos);
               }
